@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Housewarming Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --sage-dark: #2f4538;
+      --sage-mid: #4a6b57;
+      --sage-light: #e8efe9;
+      --cream: #faf8f3;
+      --gold: #c6a256;
+      --gold-light: #e4cc8f;
+      --text-main: #2b2b2b;
+      --text-muted: #5f6661;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at top, #f3f6f2, #dfe8e0);
+      font-family: "Poppins", sans-serif;
+      color: var(--text-main);
+    }
+
+    /* Outer Invitation Card */
+    .card-wrapper {
+      width: 100%;
+      max-width: 520px;
+      background: var(--cream);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 20px 50px rgba(47, 69, 56, 0.18);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.9s ease forwards;
+    }
+
+    .card-border {
+      border: 2px solid var(--gold);
+      border-radius: 12px;
+      padding: 36px 26px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), rgba(250, 248, 243, 0.95));
+    }
+
+    /* Corner Ornaments */
+    .card-border::before,
+    .card-border::after {
+      content: "✦";
+      position: absolute;
+      color: var(--gold);
+      font-size: 18px;
+    }
+    .card-border::before {
+      top: 10px;
+      left: 14px;
+    }
+    .card-border::after {
+      bottom: 10px;
+      right: 14px;
+    }
+
+    /* Cover / Reveal Overlay */
+    .cover-screen {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(145deg, var(--sage-dark), #1f3026);
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+      z-index: 10;
+      transition: opacity 0.7s ease, visibility 0.7s ease;
+    }
+
+    .cover-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cover-icon {
+      font-size: 46px;
+      margin-bottom: 14px;
+      color: var(--gold-light);
+    }
+
+    .cover-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 34px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .cover-sub {
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 28px;
+    }
+
+    .open-btn {
+      background: linear-gradient(135deg, var(--gold), #b08a3e);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 999px;
+      font-family: "Poppins", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Main Card Typography */
+    .blessing {
+      font-size: 12px;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      color: var(--sage-mid);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .main-heading {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--sage-dark);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .sub-heading {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 20px;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .divider {
+      width: 90px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 16px auto;
+    }
+
+    .invite-text {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .host-names {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--sage-dark);
+      margin-bottom: 20px;
+    }
+
+    /* Event Details Grid */
+    .details-box {
+      background: var(--sage-light);
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin: 18px 0 22px;
+      display: grid;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13.5px;
+    }
+
+    .detail-icon {
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--sage-dark);
+      display: block;
+    }
+
+    .detail-value {
+      color: var(--text-muted);
+    }
+
+    /* Action Buttons */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 11px 20px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background: var(--sage-dark);
+      color: #fff;
+      border: 1.5px solid var(--sage-dark);
+    }
+
+    .btn-primary:hover {
+      background: var(--sage-mid);
+      border-color: var(--sage-mid);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--sage-dark);
+      border: 1.5px solid var(--gold);
+    }
+
+    .btn-outline:hover {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    .rsvp-msg {
+      margin-top: 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--sage-mid);
+      min-height: 20px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card-border {
+        padding: 28px 18px;
+      }
+      .main-heading {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card-wrapper">
+    <!-- Interactive Cover Screen -->
+    <div class="cover-screen" id="coverScreen">
+      <div class="cover-icon">🏡</div>
+      <div class="cover-sub">You Are Warmly Invited</div>
+      <h1 class="cover-title">Griha Pravesham</h1>
+      <button class="open-btn" id="openBtn">Open Invitation</button>
+    </div>
+
+    <!-- Main Invitation Content -->
+    <div class="card-border">
+      <p class="blessing">With Blessings &amp; Joy</p>
+      <h1 class="main-heading">Housewarming</h1>
+      <p class="sub-heading">New Home, New Beginnings</p>
+
+      <div class="divider"></div>
+
+      <p class="invite-text">
+        We are delighted to invite you and your family to celebrate the auspicious
+        <strong>Griha Pravesham</strong> of our new home and share in our happiness.
+      </p>
+
+      <div class="host-names">Your Family Name</div>
+
+      <div class="details-box">
+        <div class="detail-row">
+          <span class="detail-icon">📅</span>
+          <div>
+            <span class="detail-label">Date</span>
+            <span class="detail-value">Sunday, 29 November 2026</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">⏰</span>
+          <div>
+            <span class="detail-label">Muhurtham &amp; Lunch</span>
+            <span class="detail-value">Pooja at 9:30 AM | Lunch from 12:30 PM onwards</span>
+          </div>
+        </div>
+        <div class="detail-row">
+          <span class="detail-icon">📍</span>
+          <div>
+            <span class="detail-label">Venue</span>
+            <span class="detail-value">H.No. 12-34, Street Name, Locality, Hyderabad, Telangana</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <!-- Replace the href with your actual Google Maps share link -->
+        <a class="btn btn-primary" href="https://maps.google.com" target="_blank" rel="noopener">
+          📍 View Location
+        </a>
+        <button class="btn btn-outline" id="rsvpBtn">
+          ✨ Confirm Attendance
+        </button>
+      </div>
+
+      <div class="rsvp-msg" id="rsvpMsg"></div>
+
+      <p class="footer-note">Your presence and blessings are the greatest gift.</p>
+    </div>
+  </div>
+
+  <script>
+    const coverScreen = document.getElementById("coverScreen");
+    const openBtn = document.getElementById("openBtn");
+    const rsvpBtn = document.getElementById("rsvpBtn");
+    const rsvpMsg = document.getElementById("rsvpMsg");
+
+    openBtn.addEventListener("click", () => {
+      coverScreen.classList.add("hidden");
+    });
+
+    rsvpBtn.addEventListener("click", () => {
+      rsvpMsg.textContent = "Thank you! We look forward to welcoming you to our new home.";
+      rsvpBtn.textContent = "✓ Confirmed";
+      rsvpBtn.disabled = true;
+    });
+  </script>
+
+</body>
+</html>
